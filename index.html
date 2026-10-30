@@ -184,7 +184,7 @@
   body.short header .ttl{font-size:11px;line-height:1.35}
   body.short header > span{top:12px}
   body.short .index{padding:50px 16px 30px}
-  body.short .card{padding:12px 18px;gap:8px;height:100%;width:100%}
+  body.short .card{padding:12px 18px;gap:8px;height:80%;width:80%}
   body.short .info{font-size:11.5px;min-height:0;gap:14px;line-height:1.2;grid-template-columns:auto auto auto auto;justify-content:start}
   body.short .info > div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
   body.short .info > div span[style]{display:none}
@@ -194,7 +194,7 @@
   body.short .group{gap:4px}
   body.short .bars,body.short .gbars{gap:4px}
   body.short .bar{border-radius:10px}
-  body.short .bar .go{top:8px;right:10px;font-size:10px}
+  body.short .bar .go{top:8px;right:10px;font-size:9.5px;white-space:nowrap}
   body.short .bar .cap{left:12px;right:12px;bottom:9px;font-size:10px}
   body.short .bar .cap small{font-size:8.5px}
   body.short .ttl-ch,body.short .ttl-cv{left:12px;width:calc(100% - 22px);max-width:none}
@@ -439,6 +439,7 @@ function size(){
   const short = document.body.classList.contains('short');
   const maxH = h*(single ? 0.74 : short ? 0.76 : 0.80), maxW = single ? w*0.88 : w*0.92/2;
   let ph = maxH, pw = ph/RATIO; if (pw>maxW){ pw=maxW; ph=pw*RATIO; }
+  if (short){ pw *= 0.8; ph *= 0.8; }   // 휴대폰: 배경이 더 보이도록 책을 20% 작게
   document.documentElement.style.setProperty('--pw', pw+'px');
   document.documentElement.style.setProperty('--ph', ph+'px');
 }
