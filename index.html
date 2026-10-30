@@ -280,7 +280,7 @@ function orient(){
 }
 orient();
 /* ===== 속지 설정 ===== */
-const INNER_COUNT = 275;  // 속지 쪽수 (img/pages/001.webp ~ 275.webp)
+const INNER_COUNT = 304;  // 속지 쪽수 (img/pages/001.webp ~ 304.webp)
 const INNER_PAGES = Array.from({length:INNER_COUNT},(_,i)=>`img/pages/${String(i+1).padStart(3,'0')}.webp`);
 const COVER = {front:'img/front.webp', flapFront:'img/flap-front.webp',
                flapBack:'img/flap-back.webp', back:'img/back.webp'};
@@ -304,39 +304,40 @@ const PARTS = [
   {label:'', items:[
     {key:'cover', t:'표지', sub:'Cover', no:'—', color:'#7f8fb8', img:'img/front.webp', page:0,
       grad:'linear-gradient(170deg,#8f94c9 0%,#5ea7c4 45%,#c9876d 100%)'},
-    {t:'서문 · 추천사', sub:'Preface', no:'—', color:'#dbd5dd', dark:1, page:4, bio:1},
-    {t:'Contents', sub:'목차', no:'003', color:'#7d93ab', ch:{n:'Contents', ko:[], en:'', inline:0, big:1},
+    {t:'서문 · 추천사', sub:'Preface', no:'003', color:'#dbd5dd', dark:1, page:5, bio:1},
+    {t:'Contents', sub:'목차', no:'—', color:'#7d93ab', ch:{n:'Contents', ko:[], en:'', inline:0, big:1},
       grad:'linear-gradient(160deg,#a16a54 0%,#5c9bad 45%,#7c8cab 75%,#93656b 100%)', page:8},
   ]},
   {label:'<b>1</b><span class="gt">History & Introduction</span>', part:'1부 · 재료의 역사와 개론', items:[
-    {t:'디자인의 언어,\n재료의 본질', sub:'Intro.', no:'008', color:'#507d80', page:13, ch:{n:'Intro.', ko:['디자인의 언어,','재료의 본질'], en:'', inline:0}},
-    {t:'시간과 서사\n재료의 역사', sub:'Chapter 01 · History', no:'012', color:'#eb8a69', page:17, ch:{n:'Chapter 01', ko:['시간과 서사', '재료의 역사'], en:'History', inline:1}},
-    {t:'Text-to-Video', sub:'Chapter 01 · Creative Variations', no:'018', color:'#f3bba8', page:23, w:.5, cv:{n:'01', sub:'시대적 맥락을 반영한 재료의 변천사 구현'}},
+    {t:'디자인의 언어,\n재료의 본질', sub:'Intro.', no:'012', color:'#507d80', page:15, ch:{n:'Intro.', ko:['디자인의 언어,','재료의 본질'], en:'', inline:0}},
+    {t:'시간과 서사\n재료의 역사', sub:'Chapter 01 · History', no:'018', color:'#eb8a69', page:21, ch:{n:'Chapter 01', ko:['시간과 서사', '재료의 역사'], en:'History', inline:1}},
+    {t:'Text-to-Video', sub:'Chapter 01 · Creative Variations', no:'024', color:'#f3bba8', page:27, w:.5, cv:{n:'01', sub:'시대적 맥락을 반영한 재료의 변천사 구현'}},
   ]},
   {label:'<b>2</b><span class="gt">Natural Materials</span>', part:'2부 · 자연 재료의 물성과 적용', items:[
-    {t:'따뜻함과 편안함\n목재 Wood', sub:'Chapter 02 · Wood', no:'044', color:'#ddd47c', page:49, dark:1, ch:{n:'Chapter 02', ko:['따뜻함과 편안함', '목재'], en:'Wood', inline:1}},
-    {t:'Texture', sub:'Chapter 02 · Creative Variations', no:'052', color:'#ebe6b3', page:57, w:.5, dark:1, cv:{n:'02', sub:'목재의 무늬결과 표면 처리에 따른 공간 연출'}},
-    {t:'견고함과 웅장함\n석재 Stone', sub:'Chapter 03 · Stone', no:'076', color:'#a3b89d', page:81, dark:1, ch:{n:'Chapter 03', ko:['견고함과 웅장함', '석재'], en:'Stone', inline:1}},
-    {t:'Contrast', sub:'Chapter 03 · Creative Variations', no:'084', color:'#cad6c6', page:89, w:.5, dark:1, cv:{n:'03', sub:'석재의 표면 가공도에 따른 질감 및 반사 특성 구현'}},
+    {t:'따뜻함과 편안함\n목재 Wood', sub:'Chapter 02 · Wood', no:'050', color:'#ddd47c', page:53, dark:1, ch:{n:'Chapter 02', ko:['따뜻함과 편안함', '목재'], en:'Wood', inline:1}},
+    {t:'Texture', sub:'Chapter 02 · Creative Variations', no:'060', color:'#ebe6b3', page:63, w:.5, dark:1, cv:{n:'02', sub:'목재의 무늬결과 표면 처리에 따른 공간 연출'}},
+    {t:'견고함과 웅장함\n석재 Stone', sub:'Chapter 03 · Stone', no:'084', color:'#a3b89d', page:87, dark:1, ch:{n:'Chapter 03', ko:['견고함과 웅장함', '석재'], en:'Stone', inline:1}},
+    {t:'Contrast', sub:'Chapter 03 · Creative Variations', no:'094', color:'#cad6c6', page:97, w:.5, dark:1, cv:{n:'03', sub:'석재의 표면 가공도에 따른 질감 및 반사 특성 구현'}},
   ]},
   {label:'<b>3</b><span class="gt">Structural & Patterned</span>', part:'3부 · 구조와 패턴의 구축성', items:[
-    {t:'단순함과 담백함\n시멘트와 콘크리트', sub:'Chapter 04 · Concrete', no:'106', color:'#707483', page:111, ch:{n:'Chapter 04', ko:['단순함과 담백함', '시멘트와 콘크리트'], en:'Concrete', inline:0}},
-    {t:'Volume & Shadow', sub:'Chapter 04 · Creative Variations', no:'112', color:'#acaeb7', page:117, w:.5, cv:{n:'04', sub:'빛의 음영을 극대화한 브루탈리즘 스타일 공간 생성'}},
-    {t:'균형감과 율동감\n벽돌과 타일', sub:'Chapter 05 · Brick & Tile', no:'134', color:'#933a28', page:139, ch:{n:'Chapter 05', ko:['균형감과 율동감', '벽돌과 타일'], en:'Brick & Tile', inline:0}},
-    {t:'Pattern', sub:'Chapter 05 · Creative Variations', no:'140', color:'#c08d82', page:145, w:.5, cv:{n:'05', sub:'모듈의 반복과 변형을 통한 파라메트릭 패턴 디자인'}},
+    {t:'단순함과 담백함\n시멘트와 콘크리트', sub:'Chapter 04 · Concrete', no:'116', color:'#707483', page:119, ch:{n:'Chapter 04', ko:['단순함과 담백함', '시멘트와 콘크리트'], en:'Concrete', inline:0}},
+    {t:'Volume & Shadow', sub:'Chapter 04 · Creative Variations', no:'124', color:'#acaeb7', page:127, w:.5, cv:{n:'04', sub:'빛의 음영을 극대화한 브루탈리즘 스타일 공간 생성'}},
+    {t:'균형감과 율동감\n벽돌과 타일', sub:'Chapter 05 · Brick & Tile', no:'146', color:'#933a28', page:149, ch:{n:'Chapter 05', ko:['균형감과 율동감', '벽돌과 타일'], en:'Brick & Tile', inline:0}},
+    {t:'Pattern', sub:'Chapter 05 · Creative Variations', no:'154', color:'#c08d82', page:157, w:.5, cv:{n:'05', sub:'모듈의 반복과 변형을 통한 파라메트릭 패턴 디자인'}},
   ]},
   {label:'<b>4</b><span class="gt">Modern & Finishing</span>', part:'4부 · 현대적 표면과 마감 기법', items:[
-    {t:'투명함과 차가움\n유리와 금속', sub:'Chapter 06 · Glass & Metal', no:'158', color:'#668bb5', page:163, ch:{n:'Chapter 06', ko:['투명함과 차가움', '유리와 금속'], en:'Glass & Metal', inline:0}},
-    {t:'Reflection', sub:'Chapter 06 · Creative Variations', no:'164', color:'#a6bcd4', page:169, w:.5, cv:{n:'06', sub:'굴절과 반사율 제어를 통한 하이테크 공간 시각화'}},
-    {t:'부드러움과 섬세함\n패브릭과 벽지', sub:'Chapter 07 · Fabric & Wallpaper', no:'196', color:'#9aced3', page:201, dark:1, ch:{n:'Chapter 07', ko:['부드러움과 섬세함', '패브릭과 벽지'], en:'Fabric & Wallpaper', inline:0}},
-    {t:'Tactility', sub:'Chapter 07 · Creative Variations', no:'202', color:'#c4e3e5', page:207, w:.5, dark:1, cv:{n:'07', sub:'주름과 직물의 촉각적 감성을 시각화한 소프트 스타일링'}},
+    {t:'투명함과 차가움\n유리와 금속', sub:'Chapter 06 · Glass & Metal', no:'170', color:'#668bb5', page:173, ch:{n:'Chapter 06', ko:['투명함과 차가움', '유리와 금속'], en:'Glass & Metal', inline:0}},
+    {t:'Reflection', sub:'Chapter 06 · Creative Variations', no:'180', color:'#a6bcd4', page:183, w:.5, cv:{n:'06', sub:'굴절과 반사율 제어를 통한 하이테크 공간 시각화'}},
+    {t:'부드러움과 섬세함\n패브릭과 벽지', sub:'Chapter 07 · Fabric & Wallpaper', no:'212', color:'#9aced3', page:215, dark:1, ch:{n:'Chapter 07', ko:['부드러움과 섬세함', '패브릭과 벽지'], en:'Fabric & Wallpaper', inline:0}},
+    {t:'Tactility', sub:'Chapter 07 · Creative Variations', no:'220', color:'#c4e3e5', page:223, w:.5, dark:1, cv:{n:'07', sub:'주름과 직물의 촉각적 감성을 시각화한 소프트 스타일링'}},
   ]},
   {label:'<b>5</b><span class="gt">Future Vision</span>', part:'5부 · 크리에이터, 공간에 감각의 재료 확장', items:[
-    {t:'무한함과 가변성\n하이퍼-머티리얼', sub:'Chapter 08 · Hyper-Materials', no:'222', color:'#9185a4', page:227, ch:{n:'Chapter 08', ko:['무한함과 가변성', '하이퍼-머티리얼'], en:'Hyper-Materials', inline:0}},
-    {t:'Transcendence', sub:'Chapter 08 · Creative Variations', no:'224', color:'#bfb8ca', page:229, w:.5, cv:{n:'08', sub:'물리적 한계를 넘어선 비물질적 감각의 구현'}},
+    {t:'무한함과 가변성\n하이퍼-머티리얼', sub:'Chapter 08 · Hyper-Materials', no:'242', color:'#9185a4', page:245, ch:{n:'Chapter 08', ko:['무한함과 가변성', '하이퍼-머티리얼'], en:'Hyper-Materials', inline:0}},
+    {t:'Transcendence', sub:'Chapter 08 · Creative Variations', no:'250', color:'#bfb8ca', page:253, w:.5, cv:{n:'08', sub:'물리적 한계를 넘어선 비물질적 감각의 구현'}},
   ]},
   {label:'', items:[
-    {t:'참고문헌', sub:'Reference', no:'266', color:'#5a5b64', grad:'linear-gradient(170deg,#2f3038 0%,#6b6f7e 55%,#4d6a8a 100%)', page:271, ref:1},
+    {t:'참고문헌', sub:'Reference', no:'294', color:'#5a5b64', grad:'linear-gradient(170deg,#2f3038 0%,#6b6f7e 55%,#4d6a8a 100%)', page:295, ref:1},
+    {t:'Creator List', sub:'Appendix', no:'298', color:'#6b6e7c', grad:'linear-gradient(170deg,#4a4c57 0%,#8a8fa0 60%,#6d7f99 100%)', page:300, ref:2},
   ]},
 ];
 
@@ -364,7 +365,7 @@ function sectionAt(c){ // 현재 펼침이 속한 장 이름
   let name = '';
   PARTS.forEach(g=>g.items.forEach(it=>{
     if (it.page && spreadOf(it.page)<=c)
-      name = /^(Chapter|Intro)/.test(it.sub) ? it.sub.split(' · ')[0] : (it.sub==='Reference' ? 'Reference' : it.t.split('\n')[0]);
+      name = /^(Chapter|Intro)/.test(it.sub) ? it.sub.split(' · ')[0] : (it.sub==='Reference' || it.sub==='Appendix' ? it.sub : it.t.split('\n')[0]);
   }));
   return name;
 }
@@ -520,6 +521,7 @@ function titleHTML(it){
     return `<div class="ttl-cv" style="--nude:${col}"><div class="h"><b>${ch.n}</b><span><b>${ch.ko[0]}</b> ${ch.ko[1]}</span></div>`
          + `<div class="v"><b>Creative Variations</b><span class="ol">${it.t}</span><b>${it.cv.sub}</b></div></div>`;
   }
+  if (it.ref===2) return `<div class="ttl-cv ref" style="--nude:#eef0f5"><div class="v"><span class="ol">Appendix</span><b>Creator List</b></div></div>`;
   if (it.ref) return `<div class="ttl-cv ref" style="--nude:#e9ecf2"><div class="v"><span class="ol">Reference</span><b>참고문헌</b></div></div>`;
   return '';
 }
