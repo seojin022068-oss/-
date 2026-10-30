@@ -139,7 +139,7 @@
 
 <script>
 /* ===== 속지 설정 ===== */
-const INNER_COUNT = 281;  // 속지 쪽수 (img/pages/001.webp ~ 281.webp)
+const INNER_COUNT = 275;  // 속지 쪽수 (img/pages/001.webp ~ 275.webp)
 const INNER_PAGES = Array.from({length:INNER_COUNT},(_,i)=>`img/pages/${String(i+1).padStart(3,'0')}.webp`);
 const COVER = {front:'img/front.webp', flapFront:'img/flap-front.webp',
                flapBack:'img/flap-back.webp', back:'img/back.webp'};
@@ -152,39 +152,39 @@ const PARTS = [
   {label:'', items:[
     {key:'cover', t:'표지', sub:'Cover', no:'—', color:'#7f8fb8', img:'img/front.webp', page:0,
       grad:'linear-gradient(170deg,#8f94c9 0%,#5ea7c4 45%,#c9876d 100%)'},
-    {t:'서문 · 추천사', sub:'Preface', no:'003', color:'#dbd5dd', dark:1, page:4},
-    {t:'Contents', sub:'목차', no:'—', color:'#7d93ab',
+    {t:'서문 · 추천사', sub:'Preface', no:'—', color:'#dbd5dd', dark:1, page:4},
+    {t:'Contents', sub:'목차', no:'003', color:'#7d93ab',
       grad:'linear-gradient(160deg,#a16a54 0%,#5c9bad 45%,#7c8cab 75%,#93656b 100%)', page:8},
   ]},
   {label:'<b>1</b>History & Introduction', part:'1부 · 재료의 역사와 개론', items:[
-    {t:'디자인의 언어,\n재료의 본질', sub:'Intro.', no:'012', color:'#507d80', page:15},
-    {t:'시간과 서사\n재료의 역사', sub:'Chapter 01 · History', no:'018', color:'#eb8a69', page:20},
-    {t:'Text-to-Video', sub:'Chapter 01 · Creative Variations', no:'—', color:'#f3bba8', page:27, w:.5},
+    {t:'디자인의 언어,\n재료의 본질', sub:'Intro.', no:'008', color:'#507d80', page:13},
+    {t:'시간과 서사\n재료의 역사', sub:'Chapter 01 · History', no:'012', color:'#eb8a69', page:17},
+    {t:'Text-to-Video', sub:'Chapter 01 · Creative Variations', no:'018', color:'#f3bba8', page:23, w:.5},
   ]},
   {label:'<b>2</b>Natural Materials', part:'2부 · 자연 재료의 물성과 적용', items:[
-    {t:'따뜻함과 편안함\n목재 Wood', sub:'Chapter 02 · Wood', no:'050', color:'#ddd47c', page:53, dark:1},
-    {t:'Texture', sub:'Chapter 02 · Creative Variations', no:'061', color:'#ebe6b3', page:63, w:.5, dark:1},
-    {t:'견고함과 웅장함\n석재 Stone', sub:'Chapter 03 · Stone', no:'076', color:'#a3b89d', page:87, dark:1},
-    {t:'Contrast', sub:'Chapter 03 · Creative Variations', no:'084', color:'#cad6c6', page:95, w:.5, dark:1},
+    {t:'따뜻함과 편안함\n목재 Wood', sub:'Chapter 02 · Wood', no:'044', color:'#ddd47c', page:49, dark:1},
+    {t:'Texture', sub:'Chapter 02 · Creative Variations', no:'052', color:'#ebe6b3', page:57, w:.5, dark:1},
+    {t:'견고함과 웅장함\n석재 Stone', sub:'Chapter 03 · Stone', no:'076', color:'#a3b89d', page:81, dark:1},
+    {t:'Contrast', sub:'Chapter 03 · Creative Variations', no:'084', color:'#cad6c6', page:89, w:.5, dark:1},
   ]},
   {label:'<b>3</b>Structural & Patterned', part:'3부 · 구조와 패턴의 구축성', items:[
-    {t:'단순함과 담백함\n시멘트와 콘크리트', sub:'Chapter 04 · Concrete', no:'106', color:'#707483', page:117},
-    {t:'Volume & Shadow', sub:'Chapter 04 · Creative Variations', no:'112', color:'#acaeb7', page:123, w:.5},
-    {t:'균형감과 율동감\n벽돌과 타일', sub:'Chapter 05 · Brick & Tile', no:'134', color:'#933a28', page:145},
-    {t:'Pattern', sub:'Chapter 05 · Creative Variations', no:'140', color:'#c08d82', page:151, w:.5},
+    {t:'단순함과 담백함\n시멘트와 콘크리트', sub:'Chapter 04 · Concrete', no:'106', color:'#707483', page:111},
+    {t:'Volume & Shadow', sub:'Chapter 04 · Creative Variations', no:'112', color:'#acaeb7', page:117, w:.5},
+    {t:'균형감과 율동감\n벽돌과 타일', sub:'Chapter 05 · Brick & Tile', no:'134', color:'#933a28', page:139},
+    {t:'Pattern', sub:'Chapter 05 · Creative Variations', no:'140', color:'#c08d82', page:145, w:.5},
   ]},
   {label:'<b>4</b>Modern & Finishing', part:'4부 · 현대적 표면과 마감 기법', items:[
-    {t:'투명함과 차가움\n유리와 금속', sub:'Chapter 06 · Glass & Metal', no:'158', color:'#668bb5', page:169},
-    {t:'Reflection', sub:'Chapter 06 · Creative Variations', no:'164', color:'#a6bcd4', page:175, w:.5},
-    {t:'부드러움과 섬세함\n패브릭과 벽지', sub:'Chapter 07 · Fabric & Wallpaper', no:'196', color:'#9aced3', page:207, dark:1},
-    {t:'Tactility', sub:'Chapter 07 · Creative Variations', no:'202', color:'#c4e3e5', page:213, w:.5, dark:1},
+    {t:'투명함과 차가움\n유리와 금속', sub:'Chapter 06 · Glass & Metal', no:'158', color:'#668bb5', page:163},
+    {t:'Reflection', sub:'Chapter 06 · Creative Variations', no:'164', color:'#a6bcd4', page:169, w:.5},
+    {t:'부드러움과 섬세함\n패브릭과 벽지', sub:'Chapter 07 · Fabric & Wallpaper', no:'196', color:'#9aced3', page:201, dark:1},
+    {t:'Tactility', sub:'Chapter 07 · Creative Variations', no:'202', color:'#c4e3e5', page:207, w:.5, dark:1},
   ]},
   {label:'<b>5</b>Future Vision', part:'5부 · 크리에이터, 공간에 감각의 재료 확장', items:[
-    {t:'무한함과 가변성\n하이퍼-머티리얼', sub:'Chapter 08 · Hyper-Materials', no:'222', color:'#9185a4', page:233},
-    {t:'Transcendence', sub:'Chapter 08 · Creative Variations', no:'224', color:'#bfb8ca', page:235, w:.5},
+    {t:'무한함과 가변성\n하이퍼-머티리얼', sub:'Chapter 08 · Hyper-Materials', no:'222', color:'#9185a4', page:227},
+    {t:'Transcendence', sub:'Chapter 08 · Creative Variations', no:'224', color:'#bfb8ca', page:229, w:.5},
   ]},
   {label:'', items:[
-    {t:'참고문헌', sub:'Reference', no:'266', color:'#5a5b64', grad:'linear-gradient(170deg,#2f3038 0%,#6b6f7e 55%,#4d6a8a 100%)', page:277},
+    {t:'참고문헌', sub:'Reference', no:'266', color:'#5a5b64', grad:'linear-gradient(170deg,#2f3038 0%,#6b6f7e 55%,#4d6a8a 100%)', page:271},
   ]},
 ];
 
@@ -215,7 +215,12 @@ function sectionAt(c){ // 현재 펼침이 속한 장 이름
   }));
   return name;
 }
+function cull(){ // 펼친 면 근처 장만 그리기 (나머지는 화면에서 제거해 끊김·찢어짐 방지)
+  const back = busy ? 14 : 2;
+  leaves.forEach((l,i)=>{ l.style.display = (i>=cur-back && i<=cur+1) ? '' : 'none'; });
+}
 function render(){
+  cull();
   book.classList.toggle('closed-front', cur===0);
   book.classList.toggle('closed-back', cur===N);
   book.classList.toggle('open', cur>0 && cur<N);
@@ -295,7 +300,7 @@ async function openTo(target){
     for (let i=0;i<steps;i++){ turn(1, .75); await wait(gap); }
     await wait(800);
   }
-  busy = false;
+  busy = false; render();
 }
 function showIndex(){
   if (busy) return;
