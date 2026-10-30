@@ -176,48 +176,50 @@
   @media (max-width:1024px){
     .info{font-size:clamp(16px,2.4vw,24px)}
   }
-  /* 휴대폰: 목차 막대를 세로로 쌓음 */
-  @media (max-width:640px){
-    .card{padding:18px;gap:16px}
-    .info{grid-template-columns:1fr 1fr;row-gap:10px;font-size:16px}
-    .bars{flex-direction:column;gap:3px}
-    .group{flex-direction:row;gap:6px}
-    .glabel{width:14px;height:auto;padding:4px 0 0;font-size:10px;overflow:visible}
-    .glabel .gt{display:none}
-    .gbars{flex-direction:column;gap:3px}
-    .bar{border-radius:9px}
-    .bar .cap{left:14px;bottom:10px;font-size:12px}
-    .bar .go{top:9px;right:14px;font-size:11px}
-    .bar .cap{bottom:9px;right:14px;overflow:hidden;text-overflow:ellipsis}
-    .bar .cap small{display:inline;margin-right:.5em}
-    .bar .cap small[style]{display:none}
-    .bar .bio{top:34px;bottom:38px;left:14px;width:calc(100% - 28px)}
-    .ttl-ch,.ttl-cv{left:16px;width:calc(100% - 100px)}
-    .ttl-ch .no{font-size:16px;padding-bottom:6px}
-    .ttl-ch .ko{margin-top:8px;font-size:14px}
-    .ttl-ch.big .no{font-size:20px}
-    .ttl-cv{padding-left:10px}
-    .ttl-cv .h{font-size:11.5px;margin-bottom:8px} .ttl-cv .h > b{font-size:13px}
-    .ttl-cv .v{font-size:13px}
-    .bar .bio b{font-size:13px;margin-bottom:6px}
-    .bar .bio p{font-size:11.5px;line-height:1.65;display:-webkit-box;-webkit-line-clamp:7;-webkit-box-orient:vertical;overflow:hidden}
-    .bar .bio small{margin-top:6px;font-size:10px}
-    body:not(.indexing) .contact{display:none}
-    footer{padding:16px}
-  }
-  @media (max-width:760px){
-    header{padding:16px 18px} header .au, header .more{display:none}
-    .contact{right:16px;bottom:14px}
-    .index{padding:72px 14px 52px}
-    .info{grid-template-columns:1fr 1fr;row-gap:12px;font-size:17px;min-height:0}
-    .bars,.gbars{gap:3px}
-    .bar{border-radius:10px}
-    .glabel{font-size:10px} .glabel .gt{display:none}
-    .bar .cap{left:12px;bottom:12px;font-size:12px}
-  }
+  /* 휴대폰(가로): 높이가 낮은 화면용 촘촘한 배치 */
+  body.short header{padding:10px 16px}
+  body.short header .more{margin-top:6px;font-size:9.5px}
+  body.short header .by{column-gap:22px;row-gap:0}
+  body.short header .ttl{font-size:11px;line-height:1.35}
+  body.short header > span{top:12px}
+  body.short .index{padding:14px 16px 26px 184px}
+  body.short .card{padding:12px 16px;gap:8px;height:100%}
+  body.short .info{font-size:13px;min-height:0;gap:12px}
+  body.short .glabel{height:2.4em;font-size:8.5px}
+  body.short .group{gap:4px}
+  body.short .bars,body.short .gbars{gap:4px}
+  body.short .bar{border-radius:10px}
+  body.short .bar .go{top:8px;right:10px;font-size:10px}
+  body.short .ttl-ch,body.short .ttl-cv{left:16px;width:220px;max-width:calc(100% - 28px)}
+  body.short .ttl-ch .no{font-size:16px;padding-bottom:5px}
+  body.short .ttl-ch .ko{margin-top:8px;font-size:14px}
+  body.short .ttl-ch.big .no{font-size:20px}
+  body.short .ttl-cv{padding-left:9px;border-left-width:2px}
+  body.short .ttl-cv .h{font-size:10.5px;margin-bottom:8px} body.short .ttl-cv .h > b{font-size:12.5px}
+  body.short .ttl-cv .v{font-size:12.5px}
+  body.short .ttl-cv.ref .ol{font-size:15px}
+  body.short .bar .bio{top:26px;bottom:14px;left:14px;width:calc(100% - 28px)}
+  body.short .bar .bio b{font-size:12px;margin-bottom:4px}
+  body.short .bar .bio p{font-size:10px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:9;-webkit-box-orient:vertical;overflow:hidden}
+  body.short .bar .bio small{margin-top:4px;font-size:8.5px}
+  body.short .contact{right:14px;bottom:6px;gap:1px}
+  body.short .contact .org{font-size:8.5px}
+  body.short .insta{font-size:9.5px} body.short .insta svg{width:11px;height:11px}
+  body.short:not(.indexing) .contact{display:none}
+  body.short footer{padding:6px;gap:14px}
+  body.short footer button{width:28px;height:28px;font-size:16px}
+
+  /* 휴대폰을 세로로 들고 있을 때: 화면 전체를 90° 돌려 가로 화면으로 보여줌 */
+  #app{position:fixed;left:0;top:0;width:var(--aw,100vw);height:var(--ah,100vh);overflow:hidden}
+  body.rot #app{transform-origin:0 0;transform:translateX(var(--sw)) rotate(90deg)}
+  .rot-hint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:50;font-size:11px;letter-spacing:.04em;
+    color:var(--ink);background:rgba(255,255,255,.7);padding:7px 14px;border-radius:20px;pointer-events:none;
+    transition:opacity .8s;opacity:0;white-space:nowrap}
+  body.rot .rot-hint.show{opacity:1}
 </style>
 </head>
 <body class="indexing">
+<div id="app">
 <canvas id="paint" aria-hidden="true"></canvas>
 <div id="cur" aria-hidden="true"><div class="halo"></div><div class="dot"></div></div>
 <header>
@@ -247,8 +249,26 @@
   <span id="label">표지</span>
   <button id="next" aria-label="다음">›</button>
 </footer>
+<div class="rot-hint" id="rotHint">↻ 휴대폰을 가로로 돌려서 보세요</div>
+</div>
 
 <script>
+/* ===== 화면 방향 =====
+   휴대폰을 세로로 들고 있으면 #app 을 90° 돌려 항상 가로 화면으로 보여줌 */
+let ROT = false;
+const appW = () => ROT ? innerHeight : innerWidth;
+const appH = () => ROT ? innerWidth : innerHeight;
+const toApp = (x,y) => ROT ? [y, innerWidth - x] : [x, y];   // 화면 좌표 → 돌린 화면 안의 좌표
+function orient(){
+  const coarse = matchMedia('(pointer:coarse)').matches;
+  ROT = coarse && innerHeight > innerWidth && Math.min(innerWidth, innerHeight) < 600;
+  const b = document.body, r = document.documentElement.style;
+  b.classList.toggle('rot', ROT);
+  r.setProperty('--sw', innerWidth+'px');
+  r.setProperty('--aw', appW()+'px'); r.setProperty('--ah', appH()+'px');
+  b.classList.toggle('short', appH() < 520);
+}
+orient();
 /* ===== 속지 설정 ===== */
 const INNER_COUNT = 275;  // 속지 쪽수 (img/pages/001.webp ~ 275.webp)
 const INNER_PAGES = Array.from({length:INNER_COUNT},(_,i)=>`img/pages/${String(i+1).padStart(3,'0')}.webp`);
@@ -391,7 +411,7 @@ function step(d){
 }
 const userTurn = d => { if(!busy && !document.body.classList.contains('indexing')) step(d); };
 leaves.forEach((l,i)=>l.addEventListener('click',e=>{ if (single) return; userTurn(i<cur ? -1 : 1); }));
-document.querySelector('.stage').addEventListener('click', e=>{ if (single && !e.target.closest('footer')) userTurn(e.clientX < innerWidth/2 ? -1 : 1); });
+document.querySelector('.stage').addEventListener('click', e=>{ if (single && !e.target.closest('footer')) userTurn(toApp(e.clientX,e.clientY)[0] < appW()/2 ? -1 : 1); });
 document.getElementById('prev').onclick=()=>userTurn(-1);
 document.getElementById('next').onclick=()=>userTurn(1);
 addEventListener('keydown',e=>{
@@ -401,13 +421,16 @@ addEventListener('keydown',e=>{
   if(e.key==='Escape') showIndex();
 });
 let sx=null;
-addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
-addEventListener('touchend',e=>{ if(sx==null)return; const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>40) userTurn(dx<0?1:-1); sx=null; });
+addEventListener('touchstart',e=>{ const t=e.touches[0]; sx=toApp(t.clientX,t.clientY)[0]; },{passive:true});
+addEventListener('touchend',e=>{ if(sx==null)return; const t=e.changedTouches[0]; const dx=toApp(t.clientX,t.clientY)[0]-sx; if(Math.abs(dx)>40) userTurn(dx<0?1:-1); sx=null; });
 
 function size(){
-  single = innerWidth < 700 || innerWidth / innerHeight < 0.95;   // 휴대폰·세로 태블릿
+  orient();
+  const w = appW(), h = appH();
+  single = w / h < 0.95;   // 세로 태블릿 (휴대폰은 항상 가로로 보여주므로 펼침면)
   document.body.classList.toggle('single', single);
-  const maxH = innerHeight*(single ? 0.74 : 0.80), maxW = single ? innerWidth*0.88 : innerWidth*0.92/2;
+  const short = document.body.classList.contains('short');
+  const maxH = h*(single ? 0.74 : short ? 0.76 : 0.80), maxW = single ? w*0.88 : w*0.92/2;
   let ph = maxH, pw = ph/RATIO; if (pw>maxW){ pw=maxW; ph=pw*RATIO; }
   document.documentElement.style.setProperty('--pw', pw+'px');
   document.documentElement.style.setProperty('--ph', ph+'px');
@@ -515,8 +538,7 @@ PARTS.forEach(g=>{
 let active = null;
 function setActive(it){
   if (active===it) return; active = it;
-  const phone = matchMedia('(max-width:640px)').matches;
-  const W = phone ? (it.bio ? 24 : 13) : 9;   // 휴대폰에서 저자 소개 막대는 더 길게
+  const W = 9;   // 휴대폰에서 저자 소개 막대는 더 길게
   all.forEach(x=>{ x.el.classList.toggle('active', x===it); x.el.style.flexGrow = x===it ? W : (x.w||1); });
   groups.forEach(g=>{ g.el.style.flexGrow = g.items.reduce((s,x)=>s+(x===it?W:(x.w||1)),0); });
   const [r,g,b] = hex2rgb(it.color);
@@ -532,6 +554,11 @@ function setActive(it){
   }, 160);
 }
 setActive(all[0]); barsReady = true;
+// 돌린 화면일 때 처음에 한 번 안내
+const hint = document.getElementById('rotHint');
+function showHint(){ if (!ROT) return; hint.classList.add('show'); clearTimeout(hint._t); hint._t = setTimeout(()=>hint.classList.remove('show'), 3200); }
+showHint();
+addEventListener('orientationchange', ()=>setTimeout(()=>{ size(); render(); showHint(); }, 250));
 if (CONTACT_EMAIL){
   const a = document.getElementById('insta');
   a.href = `mailto:${CONTACT_EMAIL}`; a.hidden = false; a.removeAttribute('target');
@@ -550,7 +577,7 @@ function currentItem(c){ let f = null; all.forEach(it=>{ if (it.page && spreadOf
   let W, H, blobs = [], cur = tint.slice();
   let seed = 4; const r = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   function size(){
-    W = Math.ceil(innerWidth / S); H = Math.ceil(innerHeight / S);
+    W = Math.ceil(appW() / S); H = Math.ceil(appH() / S);
     pc.width = hole.width = W; pc.height = hole.height = H;
     seed = 4;
     blobs = Array.from({length: 8}, (_, i) => ({hx: r()*W, hy: r()*H, x:0, y:0, vx:0, vy:0,
@@ -570,8 +597,8 @@ function currentItem(c){ let f = null; all.forEach(it=>{ if (it.page && spreadOf
   size(); addEventListener('resize', size);
 
   const m = {x:-999, y:-999, px:-999, py:-999};
-  addEventListener('pointermove', e => { m.x = e.clientX; m.y = e.clientY; }, {passive:true});
-  addEventListener('pointerdown', e => { m.x = m.px = e.clientX; m.y = m.py = e.clientY; }, {passive:true});
+  addEventListener('pointermove', e => { [m.x, m.y] = toApp(e.clientX, e.clientY); }, {passive:true});
+  addEventListener('pointerdown', e => { [m.x, m.y] = toApp(e.clientX, e.clientY); m.px = m.x; m.py = m.y; }, {passive:true});
   const lift = e => { if (e.pointerType !== 'mouse'){ m.x = m.px = -999; m.y = m.py = -999; } };
   addEventListener('pointerup', lift); addEventListener('pointercancel', lift);
   document.addEventListener('mouseleave', () => { m.x = m.px = -999; m.y = m.py = -999; });
@@ -606,22 +633,23 @@ function currentItem(c){ let f = null; all.forEach(it=>{ if (it.page && spreadOf
 
 /* ---------- 커서 ---------- */
 (function(){
+  const app = document.getElementById('app');
   const c = document.getElementById('cur'), fine = matchMedia('(pointer:fine)').matches;
   if (fine) document.documentElement.classList.add('cc');
   const clickable = el => el && el.closest && el.closest('.bar:not(.off), button, a, .leaf');
   addEventListener('pointermove', e => {
     if (e.pointerType !== 'mouse') return;
-    c.style.transform = `translate(${e.clientX}px,${e.clientY}px)`; c.classList.add('on');
+    const [x,y] = toApp(e.clientX,e.clientY); c.style.transform = `translate(${x}px,${y}px)`; c.classList.add('on');
     c.classList.toggle('hover', !!clickable(e.target));
   }, {passive:true});
   document.addEventListener('mouseleave', () => c.classList.remove('on'));
   const ripple = (x,y) => { const r = document.createElement('div'); r.className='ripple'; r.style.left=x+'px'; r.style.top=y+'px';
-    document.body.append(r); r.addEventListener('animationend', ()=>r.remove()); };
+    app.append(r); r.addEventListener('animationend', ()=>r.remove()); };
   addEventListener('pointerdown', e => {
-    ripple(e.clientX, e.clientY);
+    const [x,y] = toApp(e.clientX, e.clientY); ripple(x, y);
     if (e.pointerType === 'mouse'){ c.classList.add('down'); }
-    else { const d = document.createElement('div'); d.className='tdot'; d.style.left=e.clientX+'px'; d.style.top=e.clientY+'px';
-      document.body.append(d); d.addEventListener('animationend', ()=>d.remove()); }
+    else { const d = document.createElement('div'); d.className='tdot'; d.style.left=x+'px'; d.style.top=y+'px';
+      app.append(d); d.addEventListener('animationend', ()=>d.remove()); }
   }, {passive:true});
   addEventListener('pointerup', () => c.classList.remove('down'));
 })();
