@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#eeece8; --ink:#2a2a2a; --mute:#9a968f; --paper:#fbfaf7; --card:#f8f7f4;
+    --bg:#0a0a0a; --ink:#2a2a2a; --mute:#8b8882; --light:#ece9e3; --paper:#fbfaf7; --card:#f8f7f4;
     --pw:300px; --ph:424px; /* set by JS */
     --ease:cubic-bezier(.65,.05,.36,1);
   }
@@ -20,9 +20,9 @@
 
   header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;
     padding:22px 28px;font-size:12px;letter-spacing:.04em;color:var(--mute);z-index:20}
-  header b{font-weight:500;color:var(--ink)}
+  header b{font-weight:500;color:var(--light)}
   #toIndex{font-size:12px;letter-spacing:.06em;color:var(--mute);padding:6px 0;transition:color .2s,opacity .5s}
-  #toIndex:hover{color:var(--ink)}
+  #toIndex:hover{color:var(--light)}
   body.indexing #toIndex{opacity:0;pointer-events:none}
 
   /* ================= INDEX (chapter bars) ================= */
@@ -30,7 +30,7 @@
     padding:70px 28px 40px;z-index:5;transition:opacity .6s ease, transform .8s var(--ease)}
   body:not(.indexing) .index{opacity:0;pointer-events:none;transform:scale(.985)}
   .card{width:min(1180px,100%);height:min(760px,100%);background:var(--card);border-radius:6px;
-    box-shadow:0 1px 0 rgba(0,0,0,.03),0 20px 50px -30px rgba(40,30,20,.25);
+    box-shadow:0 20px 60px -30px rgba(0,0,0,.8);
     padding:clamp(22px,3.4vw,44px);display:flex;flex-direction:column;gap:clamp(18px,3vh,34px)}
 
   .info{display:grid;grid-template-columns:1.25fr 1fr .7fr .6fr;gap:20px;
@@ -91,15 +91,15 @@
   .face.backcover::after{background:linear-gradient(270deg,rgba(0,0,0,.18),rgba(255,255,255,.08) 1.5%,transparent 4%)}
 
   .shadow{position:absolute;left:50%;top:0;width:var(--pw);height:var(--ph);
-    box-shadow:0 30px 60px -20px rgba(40,30,20,.35),0 8px 18px -8px rgba(40,30,20,.25);
+    box-shadow:0 30px 70px -20px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.04);
     transition:left 1.1s var(--ease),width 1.1s var(--ease);pointer-events:none}
   .book.open .shadow{left:0;width:calc(var(--pw)*2)}
   .book.closed-back .shadow{left:0;width:var(--pw)}
 
   footer{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:center;align-items:center;
     gap:22px;padding:24px;font-size:12px;color:var(--mute);z-index:10;letter-spacing:.04em;transition:opacity .6s}
-  footer button{color:var(--ink);font-size:18px;width:34px;height:34px;border-radius:50%;transition:background .2s,opacity .2s}
-  footer button:hover{background:rgba(0,0,0,.05)}
+  footer button{color:var(--light);font-size:18px;width:34px;height:34px;border-radius:50%;transition:background .2s,opacity .2s}
+  footer button:hover{background:rgba(255,255,255,.08)}
   footer button:disabled{opacity:.2;cursor:default;background:none}
   #label{min-width:110px;text-align:center;font-variant-numeric:tabular-nums}
 
