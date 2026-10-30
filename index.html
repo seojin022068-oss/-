@@ -546,11 +546,33 @@ PARTS.forEach(g=>{
   });
 });
 let active = null;
+// 표지 막대는 펼쳤을 때 책 판형(B5) 비율이 되도록 넓이를 계산
+function coverWeight(it){
+  const S = all.reduce((t,x)=>t+(x===it?0:(x.w||1)),0);
+  const T = all.reduce((t,x)=>t+x.el.offsetWidth,0);   // 막대 넓이 합 (돌린 화면에서도 실제 크기)
+  const w = it.el.offsetHeight / RATIO;
+  return Math.max(1, Math.min(40, w*S/Math.max(1, T-w)));
+}
+function weights(it){
+  const W = it.key==='cover' ? coverWeight(it) : document.body.classList.contains('short') ? 4.5 : 9;   // 휴대폰(가로)에서는 덜 펼침
+  all.forEach(x=>{ x.el.style.flexGrow = x===it ? W : (x.w||1); });
+  groups.forEach(g=>{ g.el.style.flexGrow = g.items.reduce((s,x)=>s+(x===it?W:(x.w||1)),0); });
+  if (it.key==='cover'){   // 펼쳐진 뒤 실제 넓이를 재서 한 번 더 맞춤
+    clearTimeout(weights._t);
+    weights._t = setTimeout(()=>{
+      if (active!==it) return;
+      const want = it.el.offsetHeight / RATIO, got = it.el.offsetWidth || 1;
+      const share = got / all.reduce((t,x)=>t+x.el.offsetWidth,0), target = want / all.reduce((t,x)=>t+x.el.offsetWidth,0);
+      const Wn = Math.max(1, Math.min(40, W * (target/(1-target)) / (share/(1-share))));
+      all.forEach(x=>{ if (x===it) x.el.style.flexGrow = Wn; });
+      groups.forEach(g=>{ g.el.style.flexGrow = g.items.reduce((s,x)=>s+(x===it?Wn:(x.w||1)),0); });
+    }, 760);
+  }
+}
 function setActive(it){
   if (active===it) return; active = it;
-  const W = document.body.classList.contains('short') ? 4.5 : 9;   // 휴대폰(가로)에서는 덜 펼침   // 휴대폰에서 저자 소개 막대는 더 길게
-  all.forEach(x=>{ x.el.classList.toggle('active', x===it); x.el.style.flexGrow = x===it ? W : (x.w||1); });
-  groups.forEach(g=>{ g.el.style.flexGrow = g.items.reduce((s,x)=>s+(x===it?W:(x.w||1)),0); });
+  all.forEach(x=>x.el.classList.toggle('active', x===it));
+  weights(it);
   const [r,g,b] = hex2rgb(it.color);
   tint = pastel(it.key==='cover' ? '#8f94c9' : it.color);
   infoEl.classList.add('swap');
@@ -564,6 +586,7 @@ function setActive(it){
   }, 160);
 }
 setActive(all[0]); barsReady = true;
+addEventListener('resize', ()=>{ if (active) weights(active); });
 // 돌린 화면일 때 처음에 한 번 안내
 const hint = document.getElementById('rotHint');
 function showHint(){ if (!ROT) return; hint.classList.add('show'); clearTimeout(hint._t); hint._t = setTimeout(()=>hint.classList.remove('show'), 3200); }
