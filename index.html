@@ -178,12 +178,13 @@
   }
   /* 휴대폰(가로): 높이가 낮은 화면용 촘촘한 배치 */
   body.short header{padding:10px 16px}
-  body.short header .more{margin-top:6px;font-size:9.5px}
+  body.short header .meta{display:flex;align-items:flex-start;gap:28px}
+  body.short header .more{margin-top:1px;font-size:9.5px}
   body.short header .by{column-gap:22px;row-gap:0}
   body.short header .ttl{font-size:11px;line-height:1.35}
   body.short header > span{top:12px}
-  body.short .index{padding:14px 16px 26px 184px}
-  body.short .card{padding:12px 16px;gap:8px;height:100%}
+  body.short .index{padding:50px 16px 30px}
+  body.short .card{padding:12px 18px;gap:8px;height:100%;width:100%}
   body.short .info{font-size:13px;min-height:0;gap:12px}
   body.short .glabel{height:2.4em;font-size:8.5px}
   body.short .group{gap:4px}
@@ -212,7 +213,7 @@
   /* 휴대폰을 세로로 들고 있을 때: 화면 전체를 90° 돌려 가로 화면으로 보여줌 */
   #app{position:fixed;left:0;top:0;width:var(--aw,100vw);height:var(--ah,100vh);overflow:hidden}
   body.rot #app{transform-origin:0 0;transform:translateX(var(--sw)) rotate(90deg)}
-  .rot-hint{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:50;font-size:11px;letter-spacing:.04em;
+  .rot-hint{position:fixed;left:50%;top:50%;margin-top:-16px;transform:translateX(-50%);z-index:50;font-size:11px;letter-spacing:.04em;
     color:var(--ink);background:rgba(255,255,255,.7);padding:7px 14px;border-radius:20px;pointer-events:none;
     transition:opacity .8s;opacity:0;white-space:nowrap}
   body.rot .rot-hint.show{opacity:1}
