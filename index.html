@@ -23,8 +23,11 @@
   header{align-items:flex-start}
   header b{font-weight:500;color:var(--light)}
   header .meta{line-height:1.6}
-  header .more{margin-top:6px;font-size:11px;color:var(--mute);letter-spacing:.02em;
+  header .ttl{display:flex;flex-direction:column;border-left:1.5px solid var(--light);padding-left:9px;line-height:1.45}
+  header .ttl span{color:var(--mute)}
+  header .more{margin-top:14px;font-size:11px;color:var(--mute);letter-spacing:.02em;
     max-height:80px;overflow:hidden;transition:opacity .5s,max-height .6s var(--ease)}
+  header .by{display:grid;grid-template-columns:auto auto;column-gap:36px;row-gap:2px;padding-left:10.5px}
   body:not(.indexing) header .more{opacity:0;max-height:0}
   header > span{position:absolute;left:50%;top:22px;transform:translateX(-50%)} header > .au{display:none}
   header .meta{flex:0 0 auto}
@@ -156,9 +159,9 @@
     footer{padding:16px}
   }
   @media (max-width:760px){
-    header{padding:16px 18px} header .ed, header .au, header .more{display:none}
+    header{padding:16px 18px} header .au, header .more{display:none}
     .contact{right:16px;bottom:14px}
-    .index{padding:56px 14px 44px}
+    .index{padding:72px 14px 52px}
     .info{grid-template-columns:1fr 1fr;row-gap:12px;font-size:17px;min-height:0}
     .bars,.gbars{gap:3px}
     .bar{border-radius:10px}
@@ -171,9 +174,9 @@
 <canvas id="paint" aria-hidden="true"></canvas>
 <header>
   <div class="meta">
-    <b>디자인과 재료 × 프롬프트</b><span class="ed">&nbsp;&nbsp;Design &amp; Material Prompt — Prompt Edition</span>
+    <div class="ttl"><b>디자인과 재료 X 프롬프트</b><span>Design &amp; Material Prompt</span></div>
     <div class="more">
-      <div>김주연 지음</div>
+      <div class="by"><span>지은이</span><span>Written by</span><span>김주연</span><span>Ju Yeon Kim</span></div>
     </div>
   </div>
   <span><button id="toIndex">← 목차</button></span>
