@@ -8,77 +8,129 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#eeece8; --ink:#2a2a2a; --mute:#9a968f; --paper:#fbfaf7;
+    --bg:#eeece8; --ink:#2a2a2a; --mute:#9a968f; --paper:#fbfaf7; --card:#f8f7f4;
     --pw:300px; --ph:424px; /* set by JS */
+    --ease:cubic-bezier(.65,.05,.36,1);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;background:var(--bg);color:var(--ink);
     font-family:"IBM Plex Sans KR",system-ui,sans-serif;overflow:hidden;
     -webkit-font-smoothing:antialiased;user-select:none}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
-  header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;
-    padding:22px 28px;font-size:12px;letter-spacing:.04em;color:var(--mute);z-index:10}
+  header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;
+    padding:22px 28px;font-size:12px;letter-spacing:.04em;color:var(--mute);z-index:20}
   header b{font-weight:500;color:var(--ink)}
+  #toIndex{font-size:12px;letter-spacing:.06em;color:var(--mute);padding:6px 0;transition:color .2s,opacity .5s}
+  #toIndex:hover{color:var(--ink)}
+  body.indexing #toIndex{opacity:0;pointer-events:none}
 
+  /* ================= INDEX (chapter bars) ================= */
+  .index{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+    padding:70px 28px 40px;z-index:5;transition:opacity .6s ease, transform .8s var(--ease)}
+  body:not(.indexing) .index{opacity:0;pointer-events:none;transform:scale(.985)}
+  .card{width:min(1180px,100%);height:min(760px,100%);background:var(--card);border-radius:6px;
+    box-shadow:0 1px 0 rgba(0,0,0,.03),0 20px 50px -30px rgba(40,30,20,.25);
+    padding:clamp(22px,3.4vw,44px);display:flex;flex-direction:column;gap:clamp(18px,3vh,34px)}
+
+  .info{display:grid;grid-template-columns:1.25fr 1fr .7fr .6fr;gap:20px;
+    color:#a7a49f;font-weight:300;font-size:clamp(16px,1.9vw,26px);line-height:1.12;min-height:3.6em}
+  .info > div{white-space:pre-line;transition:opacity .25s}
+  .info.swap > div{opacity:0}
+  .info .num{font-variant-numeric:tabular-nums}
+  .info .rgb{display:grid;grid-template-columns:auto auto;column-gap:.5em;justify-content:start}
+  .info .rgb span:nth-child(even){text-align:right}
+
+  .bars{flex:1;display:flex;gap:6px;min-height:0}
+  .group{display:flex;flex-direction:column;gap:10px;min-width:0;flex:1 1 0;
+    transition:flex-grow .7s var(--ease)}
+  .glabel{height:2.6em;font-size:11px;line-height:1.25;color:#b1aea8;letter-spacing:.04em;
+    white-space:nowrap;overflow:hidden;text-overflow:clip;padding-left:2px}
+  .glabel b{font-weight:500;color:#8e8a84;margin-right:.4em}
+  .gbars{flex:1;display:flex;gap:6px;min-height:0}
+  .bar{position:relative;flex:1 1 0;min-width:0;border-radius:16px;overflow:hidden;cursor:pointer;
+    transition:flex-grow .7s var(--ease), filter .3s;background:#bbb center/cover no-repeat}
+  .bar.off{cursor:default}
+  .bar .img{position:absolute;inset:0;background:center/cover no-repeat;opacity:0;transition:opacity .5s}
+  .bar.active .img{opacity:1}
+  .bar .cap{position:absolute;left:18px;right:18px;bottom:16px;font-size:13px;line-height:1.35;
+    color:#fff;opacity:0;transform:translateY(6px);transition:opacity .35s .15s, transform .35s .15s;white-space:nowrap}
+  .bar.dark .cap{color:#3a3a32}
+  .bar.active .cap{opacity:1;transform:none}
+  .bar .cap small{display:block;font-size:11px;opacity:.75;letter-spacing:.05em}
+  .bar .go{position:absolute;right:16px;top:14px;font-size:12px;letter-spacing:.06em;color:inherit;opacity:0;
+    transition:opacity .35s .2s}
+  .bar.active:not(.off) .go{opacity:.9}
+  .bar.dark .go{color:#3a3a32} .bar:not(.dark) .go{color:#fff}
+
+  /* ================= BOOK ================= */
   .stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-    perspective:2800px}
+    perspective:2800px;transition:opacity .6s ease}
+  body.indexing .stage, body.indexing footer{opacity:0;pointer-events:none}
   .book{position:relative;width:calc(var(--pw)*2);height:var(--ph);
     transform-style:preserve-3d;
-    transition:transform 1.1s cubic-bezier(.65,.05,.36,1), opacity 1s ease;
-    opacity:0}
-  .book.ready{opacity:1}
-  /* closed (front): only right half visible -> shift left so cover is centered */
+    transition:transform 1.1s var(--ease), opacity 1s ease}
   .book.closed-front{transform:translateX(calc(var(--pw) * -0.5))}
   .book.closed-back {transform:translateX(calc(var(--pw) *  0.5))}
-  .book.intro{transform:translateX(calc(var(--pw) * -0.5)) translateY(18px)}
+  .book.intro{transform:translateX(calc(var(--pw) * -0.5)) translateY(18px);opacity:0}
 
   .leaf{position:absolute;top:0;left:50%;width:var(--pw);height:var(--ph);
     transform-origin:left center;transform-style:preserve-3d;
-    transition:transform 1.1s cubic-bezier(.65,.05,.36,1);cursor:pointer}
+    transition:transform var(--dur,1.1s) var(--ease);cursor:pointer}
   .leaf.turned{transform:rotateY(-180deg)}
+  .leaf.instant{transition:none}
   .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
     background:var(--paper) center/cover no-repeat;overflow:hidden}
   .face.back{transform:rotateY(180deg)}
   .face.flap-l{background-size:auto 100%;background-position:left center}
   .face.flap-r{background-size:auto 100%;background-position:right center}
-  /* gutter shading */
-  .face.front::after,.face.back::after{content:"";position:absolute;inset:0;pointer-events:none}
+  .face::after{content:"";position:absolute;inset:0;pointer-events:none}
   .face.front::after{background:linear-gradient(90deg,rgba(0,0,0,.14),rgba(0,0,0,.03) 5%,transparent 12%)}
   .face.back::after {background:linear-gradient(270deg,rgba(0,0,0,.14),rgba(0,0,0,.03) 5%,transparent 12%)}
   .face.cover::after{background:linear-gradient(90deg,rgba(0,0,0,.18),rgba(255,255,255,.08) 1.5%,transparent 4%)}
   .face.backcover::after{background:linear-gradient(270deg,rgba(0,0,0,.18),rgba(255,255,255,.08) 1.5%,transparent 4%)}
 
-  /* soft shadow under the book */
   .shadow{position:absolute;left:50%;top:0;width:var(--pw);height:var(--ph);
     box-shadow:0 30px 60px -20px rgba(40,30,20,.35),0 8px 18px -8px rgba(40,30,20,.25);
-    transition:left 1.1s cubic-bezier(.65,.05,.36,1),width 1.1s cubic-bezier(.65,.05,.36,1);pointer-events:none}
+    transition:left 1.1s var(--ease),width 1.1s var(--ease);pointer-events:none}
   .book.open .shadow{left:0;width:calc(var(--pw)*2)}
   .book.closed-back .shadow{left:0;width:var(--pw)}
 
-  /* placeholder inner page */
-  .ph{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;
-    color:#c9c5bd;font-size:12px;letter-spacing:.08em}
-  .ph .n{position:absolute;bottom:5%;font-size:10px;color:#b4b0a8}
-  .back .ph .n{left:8%} .front .ph .n{right:8%}
-
   footer{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:center;align-items:center;
-    gap:22px;padding:24px;font-size:12px;color:var(--mute);z-index:10;letter-spacing:.04em}
-  footer button{background:none;border:0;color:var(--ink);font:inherit;font-size:18px;
-    width:34px;height:34px;border-radius:50%;cursor:pointer;transition:background .2s,opacity .2s}
+    gap:22px;padding:24px;font-size:12px;color:var(--mute);z-index:10;letter-spacing:.04em;transition:opacity .6s}
+  footer button{color:var(--ink);font-size:18px;width:34px;height:34px;border-radius:50%;transition:background .2s,opacity .2s}
   footer button:hover{background:rgba(0,0,0,.05)}
   footer button:disabled{opacity:.2;cursor:default;background:none}
-  #label{min-width:72px;text-align:center;font-variant-numeric:tabular-nums}
-  .hint{position:fixed;left:0;right:0;bottom:70px;text-align:center;font-size:12px;color:var(--mute);
-    transition:opacity .6s;letter-spacing:.06em}
-  .hint.off{opacity:0}
+  #label{min-width:110px;text-align:center;font-variant-numeric:tabular-nums}
+
+  @media (max-width:760px){
+    header{padding:16px 18px} header .ed, header .au{display:none}
+    .index{padding:56px 14px 20px}
+    .info{grid-template-columns:1fr 1fr;row-gap:12px;font-size:17px;min-height:0}
+    .bars,.gbars{gap:3px}
+    .bar{border-radius:10px}
+    .glabel{font-size:10px} .glabel .gt{display:none}
+    .bar .cap{left:12px;bottom:12px;font-size:12px}
+  }
 </style>
 </head>
-<body>
-<header><span><b>디자인과 재료 × 프롬프트</b>&nbsp;&nbsp;Prompt Edition</span><span>김주연 지음</span></header>
+<body class="indexing">
+<header>
+  <span><b>디자인과 재료 × 프롬프트</b><span class="ed">&nbsp;&nbsp;Prompt Edition</span></span>
+  <span><button id="toIndex">← 목차</button></span>
+  <span class="au">김주연 지음</span>
+</header>
 
-<div class="stage"><div class="book intro" id="book"><div class="shadow"></div></div></div>
+<!-- ===== 목차 화면 ===== -->
+<section class="index">
+  <div class="card">
+    <div class="info" id="info"></div>
+    <div class="bars" id="bars"></div>
+  </div>
+</section>
 
-<div class="hint" id="hint">표지를 눌러 펼치기</div>
+<!-- ===== 책 ===== -->
+<div class="stage"><div class="book intro closed-front" id="book"><div class="shadow"></div></div></div>
 <footer>
   <button id="prev" aria-label="이전">‹</button>
   <span id="label">표지</span>
@@ -86,38 +138,71 @@
 </footer>
 
 <script>
-/* ===== 속지 설정 =====
-   속지 이미지를 img/pages/ 폴더에 넣고 순서대로 파일명을 적으면 됩니다.
-   비워두면 PLACEHOLDER_COUNT 만큼 빈 자리 페이지가 들어갑니다. */
-const INNER_COUNT = 63;
+/* ===== 속지 설정 ===== */
+const INNER_COUNT = 63;  // 속지 쪽수 (img/pages/001.webp ~ 063.webp)
 const INNER_PAGES = Array.from({length:INNER_COUNT},(_,i)=>`img/pages/${String(i+1).padStart(3,'0')}.webp`);
-const PLACEHOLDER_COUNT = 8;
-
 const COVER = {front:'img/front.webp', flapFront:'img/flap-front.webp',
                flapBack:'img/flap-back.webp', back:'img/back.webp'};
 const RATIO = 728.504/515.906;   // 판형 세로/가로
 
+/* ===== 목차 설정 =====
+   page: 열람본 PDF의 몇 번째 쪽에서 시작하는지 (없으면 '열람본 미수록'으로 표시)
+   no  : 책에 인쇄된 쪽 번호 */
+const PARTS = [
+  {label:'', items:[
+    {key:'cover', t:'표지', sub:'Cover', no:'—', color:'#7f8fb8', img:'img/front.webp', page:0,
+      grad:'linear-gradient(170deg,#8f94c9 0%,#5ea7c4 45%,#c9876d 100%)'},
+    {t:'서문 · 추천사', sub:'Preface', no:'003', color:'#dbd5dd', dark:1, page:4},
+    {t:'Contents', sub:'목차', no:'—', color:'#7d93ab',
+      grad:'linear-gradient(160deg,#a16a54 0%,#5c9bad 45%,#7c8cab 75%,#93656b 100%)', page:8},
+  ]},
+  {label:'<b>1</b><span class="gt">History & Introduction</span>', part:'1부 · 재료의 역사와 개론', page:13, items:[
+    {t:'디자인의 언어,\n재료의 본질', sub:'Intro.', no:'012', color:'#507d80', page:15},
+    {t:'시간과 서사\n재료의 역사', sub:'Chapter 01 · History', no:'018', color:'#eb8a69', page:20},
+    {t:'Creative Variations\nText-to-Video', sub:'Chapter 01', no:'—', color:'#f3b39c', page:27},
+  ]},
+  {label:'<b>2</b><span class="gt">Natural Materials</span>', part:'2부 · 자연 재료의 물성과 적용', page:51, items:[
+    {t:'따뜻함과 편안함\n목재 Wood', sub:'Chapter 02', no:'050', color:'#ddd47c', dark:1, page:53},
+    {t:'Creative Variations\nTexture', sub:'Chapter 02', no:'—', color:'#ebe6b0', dark:1, page:63},
+    {t:'견고함과 웅장함\n석재 Stone', sub:'Chapter 03', no:'084', color:'#b4b4b4'},
+  ]},
+  {label:'<b>3</b><span class="gt">Structural & Patterned</span>', part:'3부 · 구조와 패턴의 구축성', items:[
+    {t:'단순함과 담백함\n콘크리트 Concrete', sub:'Chapter 04', no:'116', color:'#bcbcbc'},
+    {t:'균형감과 율동감\n벽돌과 타일 Brick & Tile', sub:'Chapter 05', no:'146', color:'#c4c4c4'},
+  ]},
+  {label:'<b>4</b><span class="gt">Modern & Finishing</span>', part:'4부 · 현대적 표면과 마감 기법', items:[
+    {t:'투명함과 차가움\n유리와 금속 Glass & Metal', sub:'Chapter 06', no:'170', color:'#bdbdbd'},
+    {t:'부드러움과 섬세함\n패브릭과 벽지 Fabric & Wallpaper', sub:'Chapter 07', no:'212', color:'#c6c6c6'},
+  ]},
+];
+
+/* ---------- 책 만들기 ---------- */
 const book = document.getElementById('book');
-const pages = INNER_PAGES.length ? INNER_PAGES.slice() : Array.from({length:PLACEHOLDER_COUNT},()=>null);
-if (pages.length % 2) pages.push(null); // 짝수로 맞춤
-
-function face(cls, src, n){
-  const d = document.createElement('div'); d.className = 'face ' + cls;
-  if (src) d.dataset.src = src;
-  else if (n && !INNER_PAGES.length) d.innerHTML = `<div class="ph">PAGE ${n}<span class="n">${n}</span></div>`;
-  return d;
-}
-// leaves: [cover|front flap], [p1|p2], ..., [back flap|back cover]
+const pages = INNER_PAGES.slice(); if (pages.length % 2) pages.push(null);
+function face(cls, src){ const d=document.createElement('div'); d.className='face '+cls; if(src) d.dataset.src=src; return d; }
 const leaves = [];
-function addLeaf(f, b){ const l=document.createElement('div'); l.className='leaf'; l.append(f,b); book.append(l); leaves.push(l); }
-addLeaf(face('front cover', COVER.front), face('back flap-l', COVER.flapFront));
-for (let i=0;i<pages.length;i+=2) addLeaf(face('front',pages[i],i+1), face('back',pages[i+1],i+2));
-addLeaf(face('front flap-r', COVER.flapBack), face('back backcover', COVER.back));
-
-let cur = 0; // number of turned leaves
+function addLeaf(f,b){ const l=document.createElement('div'); l.className='leaf'; l.append(f,b); book.append(l); leaves.push(l); }
+addLeaf(face('front cover',COVER.front), face('back flap-l',COVER.flapFront));
+for (let i=0;i<pages.length;i+=2) addLeaf(face('front',pages[i]), face('back',pages[i+1]));
+addLeaf(face('front flap-r',COVER.flapBack), face('back backcover',COVER.back));
 const N = leaves.length;
-function zFix(){ leaves.forEach((l,i)=>{ l.style.zIndex = i<cur ? i+1 : N-i; }); }
+let cur = 0, busy = false;
+const spreadOf = p => Math.floor(p/2)+1;   // 속지 p쪽이 보이는 펼침 (넘긴 장 수)
 
+function zFix(){ leaves.forEach((l,i)=>{ l.style.zIndex = i<cur ? i+1 : N-i; }); }
+function loadAround(c){
+  for (let i=Math.max(0,c-3); i<=Math.min(N-1,c+4); i++)
+    leaves[i].querySelectorAll('.face[data-src]').forEach(f=>{
+      f.style.backgroundImage=`url(${f.dataset.src})`; f.removeAttribute('data-src'); });
+}
+function sectionAt(c){ // 현재 펼침이 속한 장 이름
+  let name = '';
+  PARTS.forEach(g=>g.items.forEach(it=>{
+    if (it.page && spreadOf(it.page)<=c)
+      name = /^(Chapter|Intro)/.test(it.sub) ? it.sub.split(' · ')[0] : it.t.split('\n')[0];
+  }));
+  return name;
+}
 function render(){
   book.classList.toggle('closed-front', cur===0);
   book.classList.toggle('closed-back', cur===N);
@@ -125,54 +210,122 @@ function render(){
   document.getElementById('prev').disabled = cur===0;
   document.getElementById('next').disabled = cur===N;
   let t;
-  if (cur===0) t='표지';
-  else if (cur===N) t='뒷표지';
-  else if (cur===1) t='날개 · 1';
-  else if (cur===N-1) t=`${INNER_PAGES.length||pages.length} · 날개`;
+  if (cur===0) t='표지'; else if (cur===N) t='뒷표지';
+  else if (cur===1) t='날개 · 1'; else if (cur===N-1) t=`${INNER_COUNT} · 날개`;
   else t=`${(cur-1)*2} · ${(cur-1)*2+1}`;
-  document.getElementById('label').textContent = t;
-  load();
+  const s = (cur>1 && cur<N-1) ? sectionAt(cur) : '';
+  document.getElementById('label').textContent = s ? `${s} — ${t}` : t;
+  loadAround(cur);
 }
-// 현재 펼침면 주변 페이지만 불러오기
-function load(){
-  for (let i=Math.max(0,cur-3); i<=Math.min(N-1,cur+4); i++)
-    leaves[i].querySelectorAll('.face[data-src]').forEach(f=>{
-      f.style.backgroundImage=`url(${f.dataset.src})`; f.removeAttribute('data-src'); });
-}
-function turn(dir){
+function turn(dir, dur=1.1){
   const idx = dir>0 ? cur : cur-1;
   if (idx<0 || idx>=N) return;
   const l = leaves[idx];
+  l.style.setProperty('--dur', dur+'s');
   l.style.zIndex = 999;
   l.classList.toggle('turned', dir>0);
-  cur += dir;
-  document.getElementById('hint').classList.add('off');
-  render();
-  clearTimeout(l._t); l._t = setTimeout(zFix, 560); // swap stacking mid-flip
+  cur += dir; render();
+  clearTimeout(l._t); l._t = setTimeout(zFix, dur*500);
 }
-leaves.forEach((l,i)=>l.addEventListener('click',()=> turn(i<cur ? -1 : 1)));
-document.getElementById('prev').onclick=()=>turn(-1);
-document.getElementById('next').onclick=()=>turn(1);
-addEventListener('keydown',e=>{ if(e.key==='ArrowRight'||e.key===' ') turn(1); if(e.key==='ArrowLeft') turn(-1); });
+const userTurn = d => { if(!busy && !document.body.classList.contains('indexing')) turn(d); };
+leaves.forEach((l,i)=>l.addEventListener('click',()=> userTurn(i<cur ? -1 : 1)));
+document.getElementById('prev').onclick=()=>userTurn(-1);
+document.getElementById('next').onclick=()=>userTurn(1);
+addEventListener('keydown',e=>{
+  if (document.body.classList.contains('indexing')) return;
+  if(e.key==='ArrowRight'||e.key===' ') userTurn(1);
+  if(e.key==='ArrowLeft') userTurn(-1);
+  if(e.key==='Escape') showIndex();
+});
 let sx=null;
 addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
-addEventListener('touchend',e=>{ if(sx==null)return; const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>40) turn(dx<0?1:-1); sx=null; });
+addEventListener('touchend',e=>{ if(sx==null)return; const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>40) userTurn(dx<0?1:-1); sx=null; });
 
 function size(){
   const maxH = innerHeight*0.80, maxW = innerWidth*0.92/2;
-  let ph = maxH, pw = ph/RATIO;
-  if (pw>maxW){ pw=maxW; ph=pw*RATIO; }
+  let ph = maxH, pw = ph/RATIO; if (pw>maxW){ pw=maxW; ph=pw*RATIO; }
   document.documentElement.style.setProperty('--pw', pw+'px');
   document.documentElement.style.setProperty('--ph', ph+'px');
 }
-addEventListener('resize', size); size(); zFix(); render();
+addEventListener('resize', size); size();
 
-// 시작: 닫힌 책이 떠오른 뒤 저절로 펼쳐짐
-const pre = Object.values(COVER).map(s=>new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=s;}));
-Promise.all(pre).then(()=>{
-  requestAnimationFrame(()=>{ book.classList.add('ready'); book.classList.remove('intro'); });
-  setTimeout(()=>{ if(cur===0) turn(1); }, 1900);
+function resetBook(){
+  leaves.forEach(l=>{ l.classList.add('instant'); l.classList.remove('turned'); });
+  cur = 0; zFix(); render();
+  book.classList.add('intro');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>leaves.forEach(l=>l.classList.remove('instant'))));
+}
+zFix(); render();
+
+/* 표지가 열린 뒤, 목표 펼침까지 빠르게 넘김 */
+const wait = ms => new Promise(r=>setTimeout(r,ms));
+async function openTo(target){
+  busy = true;
+  loadAround(0); loadAround(target);
+  document.body.classList.remove('indexing');
+  await wait(350);
+  book.classList.remove('intro');
+  await wait(900);
+  turn(1);                                  // 표지 열기
+  await wait(target>1 ? 700 : 1100);
+  const steps = target - 1;
+  if (steps > 0){
+    const gap = Math.max(45, Math.min(110, 1600/steps));
+    for (let i=0;i<steps;i++){ turn(1, .75); await wait(gap); }
+    await wait(800);
+  }
+  busy = false;
+}
+function showIndex(){
+  if (busy) return;
+  document.body.classList.add('indexing');
+  setTimeout(resetBook, 600);
+}
+document.getElementById('toIndex').onclick = showIndex;
+
+/* ---------- 목차 막대 ---------- */
+const barsEl = document.getElementById('bars'), infoEl = document.getElementById('info');
+const groups = []; const all = [];
+const hex2rgb = h => [1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+PARTS.forEach(g=>{
+  const ge = document.createElement('div'); ge.className='group';
+  const lab = document.createElement('div'); lab.className='glabel'; lab.innerHTML = g.label || '&nbsp;';
+  const gb = document.createElement('div'); gb.className='gbars';
+  ge.append(lab, gb); barsEl.append(ge); groups.push({el:ge, items:[]});
+  g.items.forEach(it=>{
+    it.group = g;
+    const b = document.createElement('div');
+    b.className = 'bar' + (it.dark?' dark':'') + (it.page==null?' off':'');
+    b.style.background = it.grad || it.color;
+    b.innerHTML = (it.img ? `<div class="img" style="background-image:url(${it.img})"></div>` : '') + `<div class="cap"><small>${it.sub}</small>${it.t.replace('\n',' ')}${it.page==null?'<small style="margin-top:4px">열람본 미수록</small>':''}</div>`
+                + (it.page!=null ? `<span class="go">${it.key==='cover'?'처음부터 펼치기':'펼치기'} →</span>` : '');
+    it.el = b; gb.append(b); groups[groups.length-1].items.push(it); all.push(it);
+    b.addEventListener('mouseenter', ()=>{ if(matchMedia('(hover:hover)').matches) setActive(it); });
+    b.addEventListener('click', ()=>{
+      if (!matchMedia('(hover:hover)').matches && active!==it) { setActive(it); return; } // 터치: 첫 탭은 선택
+      if (it.page==null) return;
+      openTo(it.page===0 ? 1 : spreadOf(it.page));
+    });
+  });
 });
+let active = null;
+function setActive(it){
+  if (active===it) return; active = it;
+  const W = 9;
+  all.forEach(x=>{ x.el.classList.toggle('active', x===it); x.el.style.flexGrow = x===it ? W : 1; });
+  groups.forEach(g=>{ g.el.style.flexGrow = g.items.reduce((s,x)=>s+(x===it?W:1),0); });
+  const [r,g,b] = hex2rgb(it.color);
+  infoEl.classList.add('swap');
+  setTimeout(()=>{
+    infoEl.innerHTML =
+      `<div>${it.t}</div>`+
+      `<div>${it.sub.replace(' · ','\n')}${it.group.part?`\n<span style="font-size:.6em;letter-spacing:.02em">${it.group.part}</span>`:''}</div>`+
+      `<div class="num">${it.page==null?'열람본\n미수록':'Page\n'+it.no}</div>`+
+      `<div class="rgb num"><span>R</span><span>${r}</span><span>G</span><span>${g}</span><span>B</span><span>${b}</span></div>`;
+    infoEl.classList.remove('swap');
+  }, 160);
+}
+setActive(all[0]);
 </script>
 </body>
 </html>
