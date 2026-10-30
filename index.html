@@ -65,6 +65,40 @@
     animation:tdot .75s ease forwards}
   @keyframes tdot{0%{opacity:1}60%{opacity:1;box-shadow:0 0 0 0 rgba(255,255,255,0),0 1px 6px rgba(40,40,70,.25)}100%{opacity:0;box-shadow:0 0 0 0 rgba(255,255,255,0),0 1px 6px rgba(40,40,70,0)}}
 
+  /* ── 첫 화면 (랜딩): 큰 제목 + 돌아가는 사례 이미지 고리 + 들어가기 ── */
+  .land{position:fixed;inset:0;z-index:12;color:var(--ink);transition:opacity .8s ease, transform 1.2s var(--ease)}
+  body:not(.landing) .land{opacity:0;pointer-events:none}
+  body.entering .land{opacity:0;transform:scale(1.03)}
+  body.landing header, body.landing .index, body.landing .contact{opacity:0;pointer-events:none}
+  .l-head{position:absolute;left:clamp(20px,3vw,44px);top:clamp(20px,4vh,44px);max-width:min(760px,62%)}
+  .l-x{font-family:"Oswald","IBM Plex Sans KR",sans-serif;font-weight:400;font-size:clamp(44px,6.2vw,104px);line-height:.95;letter-spacing:.01em}
+  .l-head h1{margin-top:clamp(10px,1.6vh,20px);font-weight:500;font-size:clamp(22px,2.7vw,44px);line-height:1.18;letter-spacing:-.01em}
+  .l-head h1 span{display:block;margin-top:.35em;font-weight:300;font-size:.5em;letter-spacing:.01em;color:#4a4a52}
+  .l-foot{position:absolute;left:clamp(20px,3vw,44px);bottom:clamp(20px,4vh,44px);max-width:320px}
+  .l-foot p{font-size:clamp(13px,1.15vw,17px);line-height:1.45;font-weight:400}
+  .l-by{margin-top:16px;font-size:12px;line-height:1.6;color:var(--mute)}
+  .l-enter{margin-top:18px;display:inline-flex;align-items:center;gap:10px;padding:11px 20px 11px 22px;border-radius:30px;
+    background:var(--ink);color:#fff;font-size:13px;letter-spacing:.06em;transition:transform .3s var(--ease), background .3s}
+  .l-enter:hover{transform:translateX(4px);background:#000}
+  .l-enter span{transition:transform .3s var(--ease)} .l-enter:hover span{transform:translateX(3px)}
+  .ring-wrap{position:absolute;left:var(--rx,64%);top:var(--ry,64%);width:0;height:0;perspective:var(--rp,1500px);perspective-origin:50% 30%}
+  .ring{position:absolute;left:0;top:0;transform-style:preserve-3d;transform:rotateX(-11deg) rotateY(0deg);will-change:transform}
+  .ring i{position:absolute;left:calc(var(--pw2) * -.5);top:calc(var(--ph2) * -.5);width:var(--pw2);height:var(--ph2);
+    background:#ddd center/cover no-repeat;backface-visibility:visible;box-shadow:0 0 0 .5px rgba(255,255,255,.4)}
+  .ring i::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,var(--shade,0));pointer-events:none}
+  body.entering .ring-wrap{transition:transform 1.3s var(--ease);transform:scale(1.25) translateY(-30px)}
+  .l-out{position:fixed;left:clamp(20px,3vw,44px);right:clamp(20px,3vw,44px);bottom:clamp(20px,5vh,56px);z-index:13;pointer-events:none;
+    display:flex;align-items:baseline;gap:.6em;flex-wrap:wrap;color:var(--ink);opacity:0;transform:translateY(40px);
+    transition:opacity .7s ease, transform 1s var(--ease)}
+  .l-out b{font-weight:500;font-size:clamp(30px,4.6vw,76px);letter-spacing:-.015em;line-height:1}
+  .l-out span{font-weight:300;font-size:clamp(18px,2.2vw,36px)}
+  body.entering .l-out{opacity:1;transform:none}
+  body.entered .l-out{opacity:0;transform:translateY(-20px);transition:opacity .6s ease, transform .8s var(--ease)}
+  body.short .l-head{max-width:60%} body.short .l-x{font-size:40px} body.short .l-head h1{font-size:19px}
+  body.short .l-foot{max-width:230px} body.short .l-foot p{font-size:11px} body.short .l-by{margin-top:8px;font-size:9.5px}
+  body.short .l-enter{margin-top:10px;padding:7px 14px;font-size:11px}
+  body.short .l-out b{font-size:30px} body.short .l-out span{font-size:16px}
+
   /* ── 첫 화면: 배경만 보이다가 가운데에 X Prompt Edition ── */
   .splash-t{position:fixed;left:50%;top:50%;z-index:30;transform:translate(-50%,-50%) translateY(10px);
     font-family:"Oswald","IBM Plex Sans KR",sans-serif;font-weight:400;font-size:clamp(36px,5.6vw,92px);letter-spacing:.02em;line-height:1;
@@ -251,8 +285,21 @@
   body.rot .rot-hint.show{opacity:1}
 </style>
 </head>
-<body class="indexing">
+<body class="indexing landing">
 <div id="app">
+<section class="land" id="land">
+  <div class="l-head">
+    <div class="l-x">X Prompt</div>
+    <h1>디자인과 재료 × 프롬프트<br><span>Interior Architecture Case Study Prompt — 실내건축 사례 분석</span></h1>
+  </div>
+  <div class="l-foot">
+    <p>재료의 언어가 프롬프트가 된다.<br>목재·석재·금속부터 하이퍼-머티리얼까지,<br>AI로 구현한 실내건축 사례 분석.</p>
+    <div class="l-by">김주연 지음<br>숭실대학교 건축학부 실내건축전공</div>
+    <button class="l-enter" id="enter">들어가기 <span>→</span></button>
+  </div>
+  <div class="ring-wrap" aria-hidden="true"><div class="ring" id="ring"></div></div>
+</section>
+<div class="l-out" aria-hidden="true"><b>디자인과 재료 프롬프트</b><span>실내건축 사례분석</span></div>
 <div class="splash-d" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 <div class="splash-t" id="splash">X Prompt Edition</div>
 <canvas id="paint" aria-hidden="true"></canvas>
@@ -623,20 +670,55 @@ addEventListener('resize', ()=>{ if (active) weights(active); });
 if (document.fonts) document.fonts.ready.then(()=>{ if (active) weights(active); });   // 글꼴이 준비된 뒤 다시 맞춤
 // 돌린 화면일 때 처음에 한 번 안내
 const hint = document.getElementById('rotHint');
-function showHint(){ if (!ROT || document.body.classList.contains('splash')) return; hint.classList.add('show'); clearTimeout(hint._t); hint._t = setTimeout(()=>hint.classList.remove('show'), 3200); }
+function showHint(){ if (!ROT || document.body.classList.contains('splash') || document.body.classList.contains('landing')) return; hint.classList.add('show'); clearTimeout(hint._t); hint._t = setTimeout(()=>hint.classList.remove('show'), 3200); }
 /* 첫 화면: 배경 → 가운데 글자 → 목차 (누르면 바로 넘어감) */
 function endSplash(){
   const b = document.body; if (!b.classList.contains('splash')) return;
   b.classList.remove('splash'); clearTimeout(endSplash._t);
   setTimeout(showHint, 700);
 }
+/* ---------- 첫 화면: 사례 이미지 고리 ---------- */
+(function(){
+  const ring = document.getElementById('ring'), N = 24;
+  for (let i=1;i<=N;i++){ const e=document.createElement('i'); e.style.backgroundImage=`url(img/ring/${String(i).padStart(2,'0')}.webp)`; ring.append(e); }
+  const items = [...ring.children];
+  function layout(){
+    const w = appW(), h = appH(), short = document.body.classList.contains('short');
+    const pw = Math.max(44, Math.min(170, w * (short ? .068 : .102))), ph = pw * 1.38;
+    const R = N * (pw + 4) / (2*Math.PI);
+    const st = document.documentElement.style;
+    st.setProperty('--pw2', pw+'px'); st.setProperty('--ph2', ph+'px');
+    st.setProperty('--rx', (short ? 74 : 67)+'%'); st.setProperty('--ry', (short ? 60 : 64)+'%');
+    st.setProperty('--rp', Math.round(R*4.2)+'px');
+    items.forEach((e,i)=>{ e.style.transform = `rotateY(${i*360/N}deg) translateZ(${R}px)`; });
+  }
+  layout(); addEventListener('resize', layout);
+  let a = 0, last = performance.now(), speed = 6;   // 도/초
+  function spin(now){
+    const dt = Math.min(.05,(now-last)/1000); last = now;
+    if (document.body.classList.contains('entering')) speed += (60 - speed) * .04;
+    a = (a + speed*dt) % 360;
+    ring.style.transform = `rotateX(-9deg) rotateY(${-a}deg)`;
+    if (document.body.classList.contains('landing')) requestAnimationFrame(spin);
+  }
+  requestAnimationFrame(spin);
+  // 들어가기: 아래에 제목이 올라왔다가 목차로
+  const enter = () => {
+    const b = document.body; if (!b.classList.contains('landing') || b.classList.contains('entering')) return;
+    b.classList.add('entering');
+    setTimeout(()=>{ b.classList.add('entered'); b.classList.remove('landing'); }, 1900);
+    setTimeout(()=>{ b.classList.remove('entering','entered'); showHint(); }, 2700);
+  };
+  document.getElementById('enter').addEventListener('click', e=>{ e.stopPropagation(); enter(); });
+  addEventListener('keydown', e=>{ if (e.key==='Enter') enter(); });
+})();
 const SPLASH = false;   // 첫 화면 인트로 (원 → X Prompt Edition). 다시 쓰려면 true + body에 splash 클래스
 if (SPLASH){
 setTimeout(()=>document.body.classList.add('show-d'), 250);    // 원들이 박자를 타고
 setTimeout(()=>document.body.classList.add('hide-d'), 2150);   // 원이 사라지고
 setTimeout(()=>document.body.classList.add('show-t'), 2600);   // 글자가 떠오른 뒤
 endSplash._t = setTimeout(endSplash, 5000);
-} else showHint();                    // 목차로
+}                    // 목차로
 addEventListener('pointerdown', e=>{ if (document.body.classList.contains('splash')){ endSplash(); } }, true);
 addEventListener('keydown', ()=>endSplash());
 addEventListener('orientationchange', ()=>setTimeout(()=>{ size(); render(); showHint(); }, 250));
