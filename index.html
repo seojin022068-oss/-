@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>디자인과 재료 × 프롬프트</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=Anton&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#f7f6f3; --ink:#2a2a2a; --mute:#7d7a74; --light:#2a2a2a; --paper:#fbfaf7; --card:#f8f7f4;
@@ -64,6 +64,18 @@
     box-shadow:0 0 0 11px rgba(255,255,255,.5),0 1px 6px rgba(40,40,70,.25);transform:translate(-50%,-50%);
     animation:tdot .75s ease forwards}
   @keyframes tdot{0%{opacity:1}60%{opacity:1;box-shadow:0 0 0 0 rgba(255,255,255,0),0 1px 6px rgba(40,40,70,.25)}100%{opacity:0;box-shadow:0 0 0 0 rgba(255,255,255,0),0 1px 6px rgba(40,40,70,0)}}
+
+  /* ── 첫 화면: 배경만 보이다가 가운데에 X Prompt Edition ── */
+  .splash-t{position:fixed;left:50%;top:50%;z-index:30;transform:translate(-50%,-50%) translateY(10px);
+    font-family:"Anton","IBM Plex Sans KR",sans-serif;font-size:clamp(38px,6.4vw,104px);letter-spacing:.01em;line-height:1;
+    color:#c3d150;white-space:nowrap;opacity:0;pointer-events:none;text-shadow:0 2px 22px rgba(50,60,90,.18);
+    transition:opacity 1s ease, transform 1.2s var(--ease), letter-spacing 1.6s var(--ease)}
+  .splash-t .x{color:#fff;margin-right:.08em}
+  body.splash.show-t .splash-t{opacity:1;transform:translate(-50%,-50%);letter-spacing:.03em}
+  body:not(.splash) .splash-t{opacity:0;transform:translate(-50%,-50%) translateY(-10px)}
+  body.splash header, body.splash .index, body.splash .contact{opacity:0;pointer-events:none}
+  header, .contact{transition:opacity .9s ease}
+  body.splash{cursor:pointer}
 
   /* ================= INDEX (chapter bars) ================= */
   .index{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
@@ -228,8 +240,9 @@
   body.rot .rot-hint.show{opacity:1}
 </style>
 </head>
-<body class="indexing">
+<body class="indexing splash">
 <div id="app">
+<div class="splash-t" id="splash"><span class="x">X</span> Prompt Edition</div>
 <canvas id="paint" aria-hidden="true"></canvas>
 <div id="cur" aria-hidden="true"><div class="halo"></div><div class="dot"></div></div>
 <header>
@@ -598,8 +611,17 @@ addEventListener('resize', ()=>{ if (active) weights(active); });
 if (document.fonts) document.fonts.ready.then(()=>{ if (active) weights(active); });   // 글꼴이 준비된 뒤 다시 맞춤
 // 돌린 화면일 때 처음에 한 번 안내
 const hint = document.getElementById('rotHint');
-function showHint(){ if (!ROT) return; hint.classList.add('show'); clearTimeout(hint._t); hint._t = setTimeout(()=>hint.classList.remove('show'), 3200); }
-showHint();
+function showHint(){ if (!ROT || document.body.classList.contains('splash')) return; hint.classList.add('show'); clearTimeout(hint._t); hint._t = setTimeout(()=>hint.classList.remove('show'), 3200); }
+/* 첫 화면: 배경 → 가운데 글자 → 목차 (누르면 바로 넘어감) */
+function endSplash(){
+  const b = document.body; if (!b.classList.contains('splash')) return;
+  b.classList.remove('splash'); clearTimeout(endSplash._t);
+  setTimeout(showHint, 700);
+}
+setTimeout(()=>document.body.classList.add('show-t'), 700);
+endSplash._t = setTimeout(endSplash, 3400);
+addEventListener('pointerdown', e=>{ if (document.body.classList.contains('splash')){ endSplash(); } }, true);
+addEventListener('keydown', ()=>endSplash());
 addEventListener('orientationchange', ()=>setTimeout(()=>{ size(); render(); showHint(); }, 250));
 if (CONTACT_EMAIL){
   const a = document.getElementById('insta');
