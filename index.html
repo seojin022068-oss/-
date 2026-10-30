@@ -251,7 +251,7 @@
   body.rot .rot-hint.show{opacity:1}
 </style>
 </head>
-<body class="indexing splash">
+<body class="indexing">
 <div id="app">
 <div class="splash-d" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 <div class="splash-t" id="splash">X Prompt Edition</div>
@@ -630,10 +630,13 @@ function endSplash(){
   b.classList.remove('splash'); clearTimeout(endSplash._t);
   setTimeout(showHint, 700);
 }
+const SPLASH = false;   // 첫 화면 인트로 (원 → X Prompt Edition). 다시 쓰려면 true + body에 splash 클래스
+if (SPLASH){
 setTimeout(()=>document.body.classList.add('show-d'), 250);    // 원들이 박자를 타고
 setTimeout(()=>document.body.classList.add('hide-d'), 2150);   // 원이 사라지고
 setTimeout(()=>document.body.classList.add('show-t'), 2600);   // 글자가 떠오른 뒤
-endSplash._t = setTimeout(endSplash, 5000);                    // 목차로
+endSplash._t = setTimeout(endSplash, 5000);
+} else showHint();                    // 목차로
 addEventListener('pointerdown', e=>{ if (document.body.classList.contains('splash')){ endSplash(); } }, true);
 addEventListener('keydown', ()=>endSplash());
 addEventListener('orientationchange', ()=>setTimeout(()=>{ size(); render(); showHint(); }, 250));
