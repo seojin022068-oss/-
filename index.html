@@ -296,19 +296,6 @@
 </head>
 <body class="indexing">
 <div id="app">
-<section class="land" id="land">
-  <div class="l-head">
-    <div class="l-x">X Prompt</div>
-    <h1>디자인과 재료 × 프롬프트<br><span>Interior Architecture Case Study Prompt — 실내건축 사례 분석</span></h1>
-  </div>
-  <div class="l-foot">
-    <p>재료의 언어가 프롬프트가 된다.<br>목재·석재·금속부터 하이퍼-머티리얼까지,<br>AI로 구현한 실내건축 사례 분석.</p>
-    <div class="l-by">김주연 지음<br>숭실대학교 건축학부 실내건축전공</div>
-    <button class="l-enter" id="enter">들어가기 <span>→</span></button>
-  </div>
-  <div class="ring-wrap" aria-hidden="true"><div class="ring" id="ring"></div></div>
-</section>
-<div class="l-out" aria-hidden="true"><b>디자인과 재료 프롬프트</b><span>실내건축 사례분석</span></div>
 <div class="splash-d" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 <div class="splash-t" id="splash">X Prompt Edition</div>
 <canvas id="paint" aria-hidden="true"></canvas>
@@ -689,6 +676,7 @@ function endSplash(){
 /* ---------- 첫 화면: 사례 이미지 고리 ---------- */
 (function(){
   const ring = document.getElementById('ring'), N = 24;
+  if (!ring) return;   // 첫 화면 인트로 삭제됨
   for (let i=1;i<=N;i++){ const e=document.createElement('i'); e.style.backgroundImage=`url(img/ring/${String(i).padStart(2,'0')}.webp)`; ring.append(e); }
   const items = [...ring.children];
   function layout(){
