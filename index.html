@@ -218,8 +218,10 @@
   .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
     background:var(--paper) center/cover no-repeat;overflow:hidden}
   .face.back{transform:rotateY(180deg)}
-  .face.flap-l{background-size:auto 100%;background-position:left center}
-  .face.flap-r{background-size:auto 100%;background-position:right center}
+  /* 날개: 날개 이미지 뒤 빈 곳은 흰색 대신 배경처럼 연한 그라데이션 */
+  .face.flap-l,.face.flap-r{background-repeat:no-repeat;background-size:auto 100%,100% 100%}
+  .face.flap-l{background-position:left center,center}
+  .face.flap-r{background-position:right center,center}
   .face::after{content:"";position:absolute;inset:0;pointer-events:none}
   .face.front::after{background:linear-gradient(90deg,rgba(0,0,0,.14),rgba(0,0,0,.03) 5%,transparent 12%)}
   .face.back::after {background:linear-gradient(270deg,rgba(0,0,0,.14),rgba(0,0,0,.03) 5%,transparent 12%)}
@@ -427,7 +429,9 @@ function zFix(){ leaves.forEach((l,i)=>{ l.style.zIndex = i<cur ? i+1 : N-i; });
 function loadAround(c){
   for (let i=Math.max(0,c-3); i<=Math.min(N-1,c+4); i++)
     leaves[i].querySelectorAll('.face[data-src]').forEach(f=>{
-      f.style.backgroundImage=`url(${f.dataset.src})`; f.removeAttribute('data-src'); });
+      const flap = f.classList.contains('flap-l') || f.classList.contains('flap-r');
+      f.style.backgroundImage = `url(${f.dataset.src})` + (flap ? ', linear-gradient(160deg,#e4e3f1 0%,#cfe0ea 50%,#bcd8e3 75%,#ecebf2 100%)' : '');
+      f.removeAttribute('data-src'); });
 }
 function sectionAt(c){ // 현재 펼침이 속한 장 이름
   let name = '';
