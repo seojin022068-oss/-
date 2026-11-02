@@ -25,6 +25,7 @@
   header .meta{line-height:1.6}
   header .ttl{display:flex;flex-direction:column;border-left:1.5px solid var(--light);padding-left:9px;line-height:1.45}
   header .ttl span{color:var(--mute)}
+  header a.ttl{color:inherit;text-decoration:none;pointer-events:auto;transition:opacity .2s} header a.ttl:hover{opacity:.6}
   header .more{margin-top:14px;font-size:11px;color:var(--mute);letter-spacing:.02em;
     max-height:80px;overflow:hidden;transition:opacity .5s,max-height .6s var(--ease)}
   header .by{display:grid;grid-template-columns:auto auto;column-gap:36px;row-gap:2px;padding-left:10.5px}
@@ -304,7 +305,7 @@
 <div id="cur" aria-hidden="true"><div class="halo"></div><div class="dot"></div></div>
 <header>
   <div class="meta">
-    <div class="ttl"><b>디자인과 재료 X 프롬프트</b><span>Design &amp; Material Prompt</span></div>
+    <a class="ttl" id="homeLink" href="https://x-prompt.vercel.app/" title="처음 화면으로"><b>디자인과 재료 X 프롬프트</b><span>Design &amp; Material Prompt</span></a>
     <div class="more">
       <div class="by"><span>지은이</span><span>Written by</span><span>김주연</span><span>Ju Yeon Kim</span></div>
     </div>
